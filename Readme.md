@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
-* Студент: [Федор Достоевский](https://up.htmlacademy.ru/javascript/20/user/1308489).
-* Наставник: `Неизвестно`.
+- Студент: [Федор Достоевский](https://up.htmlacademy.ru/javascript/20/user/1308489).
+- Наставник: `Сергей Глазков`.
 
 ---
 

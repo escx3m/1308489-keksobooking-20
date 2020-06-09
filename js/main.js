@@ -4,7 +4,6 @@ var AVATARS = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/
 var TITLES = ['Заголовок_1', 'Заголовок_2', 'Заголовок_3', 'Заголовок_4', 'Заголовок_5', 'Заголовок_6', 'Заголовок_7', 'Заголовок_8'];
 var PRICES = [5000, 7000, 16000, 43000, 19000, 25000, 17000, 15000];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
-// var TYPESRUS = {palace: 'Дворец', flat: 'Квартира', house: 'Дом', bungalo: 'Бунгало'};
 var ROOMS = [1, 2, 3];
 var GUESTS = [1, 2, 3];
 var CHECKINS = ['12:00', '13:00', '14:00'];
@@ -12,11 +11,10 @@ var CHECKOUTS = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var DESCRIPTIONS = ['Описание_1', 'Описание_2', 'Описание_3', 'Описание_4', 'Описание_5', 'Описание_6', 'Описание_7', 'Описание_8'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var FLAT_NUMBER = 8;
 
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
-
-map.classList.remove('map--faded');
 
 function getRandomInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -37,24 +35,24 @@ function getRandomArr(arr) {
   return newArr;
 }
 
-function createCard(arrIndex) {
+function createCard(cardId) {
   var x = getRandomInRange(0, 1200);
   var y = getRandomInRange(130, 630);
   var card = {
     author: {
-      avatar: AVATARS[arrIndex]
+      avatar: AVATARS[cardId]
     },
     offer: {
-      title: TITLES[arrIndex],
+      title: TITLES[cardId],
       address: x + ', ' + y,
-      price: PRICES[arrIndex],
+      price: PRICES[cardId],
       type: TYPES[getRandomInRange(0, TYPES.length - 1)],
       rooms: ROOMS[getRandomInRange(0, ROOMS.length - 1)],
       guests: GUESTS[getRandomInRange(0, GUESTS.length - 1)],
       checkin: CHECKINS[getRandomInRange(0, CHECKINS.length - 1)],
       checkout: CHECKOUTS[getRandomInRange(0, CHECKOUTS.length - 1)],
       features: getRandomArr(FEATURES),
-      description: DESCRIPTIONS[arrIndex],
+      description: DESCRIPTIONS[cardId],
       photos: getRandomArr(PHOTOS),
     },
     location: {
@@ -87,13 +85,14 @@ function createPinBlock(card) {
   return pinElement;
 }
 
-function renderPinBlocks(cardsArr) {
+function renderPinBlocks(cards) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < cardsArr.length; i++) {
-    fragment.appendChild(createPinBlock(cardsArr[i]));
+  for (var i = 0; i < cards.length; i++) {
+    fragment.appendChild(createPinBlock(cards[i]));
   }
   mapPins.appendChild(fragment);
 }
 
-var cards = createCards(8);
+map.classList.remove('map--faded');
+var cards = createCards(FLAT_NUMBER);
 renderPinBlocks(cards);

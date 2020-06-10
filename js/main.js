@@ -17,80 +17,80 @@ var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
 
 function getRandomInRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function getRandomArr(arr) {
-  var newArr = [];
-  var newArrLength = getRandomInRange(1, arr.length);
+    var newArr = [];
+    var newArrLength = getRandomInRange(1, arr.length);
 
-  for (var i = 0; i < newArrLength; i++) {
-    var newArrItem = arr[getRandomInRange(0, arr.length - 1)];
-    if (newArr.includes(newArrItem)) {
-      i--;
-    } else {
-      newArr.push(newArrItem);
+    for (var i = 0; i < newArrLength; i++) {
+        var newArrItem = arr[getRandomInRange(0, arr.length - 1)];
+        if (newArr.includes(newArrItem)) {
+            i--;
+        } else {
+            newArr.push(newArrItem);
+        }
     }
-  }
-  return newArr;
+    return newArr;
 }
 
 function createCard(cardId) {
-  var x = getRandomInRange(0, 1200);
-  var y = getRandomInRange(130, 630);
-  var card = {
-    author: {
-      avatar: AVATARS[cardId]
-    },
-    offer: {
-      title: TITLES[cardId],
-      address: x + ', ' + y,
-      price: PRICES[cardId],
-      type: TYPES[getRandomInRange(0, TYPES.length - 1)],
-      rooms: ROOMS[getRandomInRange(0, ROOMS.length - 1)],
-      guests: GUESTS[getRandomInRange(0, GUESTS.length - 1)],
-      checkin: CHECKINS[getRandomInRange(0, CHECKINS.length - 1)],
-      checkout: CHECKOUTS[getRandomInRange(0, CHECKOUTS.length - 1)],
-      features: getRandomArr(FEATURES),
-      description: DESCRIPTIONS[cardId],
-      photos: getRandomArr(PHOTOS),
-    },
-    location: {
-      x: x,
-      y: y
-    }
-  };
-  return card;
+    var x = getRandomInRange(0, 1200);
+    var y = getRandomInRange(130, 630);
+    var card = {
+        author: {
+            avatar: AVATARS[cardId]
+        },
+        offer: {
+            title: TITLES[cardId],
+            address: x + ', ' + y,
+            price: PRICES[cardId],
+            type: TYPES[getRandomInRange(0, TYPES.length - 1)],
+            rooms: ROOMS[getRandomInRange(0, ROOMS.length - 1)],
+            guests: GUESTS[getRandomInRange(0, GUESTS.length - 1)],
+            checkin: CHECKINS[getRandomInRange(0, CHECKINS.length - 1)],
+            checkout: CHECKOUTS[getRandomInRange(0, CHECKOUTS.length - 1)],
+            features: getRandomArr(FEATURES),
+            description: DESCRIPTIONS[cardId],
+            photos: getRandomArr(PHOTOS),
+        },
+        location: {
+            x: x,
+            y: y
+        }
+    };
+    return card;
 }
 
 function createCards(cardsCount) {
-  var cards = [];
-  for (var i = 0; i < cardsCount; i++) {
-    cards.push(createCard(i));
-  }
-  return cards;
+    var cards = [];
+    for (var i = 0; i < cardsCount; i++) {
+        cards.push(createCard(i));
+    }
+    return cards;
 }
 
 function createPinBlock(card) {
-  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var pinElement = pinTemplate.cloneNode(true);
-  var moveX = 50 / 2;
-  var moveY = 70;
+    var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+    var pinElement = pinTemplate.cloneNode(true);
+    var moveX = 50 / 2;
+    var moveY = 70;
 
-  pinElement.querySelector('img').src = card.author.avatar;
-  pinElement.querySelector('img').alt = card.offer.title;
-  pinElement.style.left = (card.location.x - moveX) + 'px';
-  pinElement.style.top = (card.location.y - moveY) + 'px';
+    pinElement.querySelector('img').src = card.author.avatar;
+    pinElement.querySelector('img').alt = card.offer.title;
+    pinElement.style.left = (card.location.x - moveX) + 'px';
+    pinElement.style.top = (card.location.y - moveY) + 'px';
 
-  return pinElement;
+    return pinElement;
 }
 
 function renderPinBlocks(cards) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < cards.length; i++) {
-    fragment.appendChild(createPinBlock(cards[i]));
-  }
-  mapPins.appendChild(fragment);
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < cards.length; i++) {
+        fragment.appendChild(createPinBlock(cards[i]));
+    }
+    mapPins.appendChild(fragment);
 }
 
 map.classList.remove('map--faded');

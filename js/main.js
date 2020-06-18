@@ -18,6 +18,7 @@ var PIN_HEIGHT = 84;
 
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
+var mapFiltersContainer = map.querySelector('.map__filters-container');
 var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormParts = adForm.querySelectorAll('fieldset');
@@ -215,24 +216,28 @@ function createCardBlock(card) {
 
   return cardElement;
 }
-
-function onFormElementChange() {
-  var roomNumber = document.querySelector('#room_number');
-  var placeCapacity = document.querySelector('#capacity');
-  if (roomNumber.value === '1' && placeCapacity.value !== '1') {
-    placeCapacity.setCustomValidity('Если комната одна, то гостей может быть не больше одного');
-  } else if (roomNumber.value === '2' && (placeCapacity.value === '3' || placeCapacity.value === '0')) {
-    placeCapacity.setCustomValidity('Если комнат две, то может быть 1-2 гостя');
-  } else if (roomNumber.value === '3' && placeCapacity.value === '0') {
-    placeCapacity.setCustomValidity('Если комнат три, то может быть 1-3 гостей');
-  } else if (roomNumber.value === '100' && placeCapacity.value !== '0') {
-    placeCapacity.setCustomValidity('Если комнат 100 - помещение не для гостей');
+var guestsSelect = adForm.querySelector('#capacity');
+var roomsSelect = adForm.querySelector('#room_number');
+var validateRoomsGuestsNumber = function (rooms, guests) {
+  rooms = roomsSelect;
+  guests = guestsSelect;
+  var roomsValue = parseInt(rooms.value, 10);
+  var guestsValue = parseInt(guests.value, 10);
+  if (roomsValue === 1 && (guestsValue === 0 || guestsValue > roomsValue)) {
+    roomsSelect.setCustomValidity('для 1 гостя');
+  } else if (roomsValue === 2 && (guestsValue === 0 || guestsValue > roomsValue)) {
+    roomsSelect.setCustomValidity('для 1 или 2 гостей');
+  } else if (roomsValue === 3 && (guestsValue === 0 || guestsValue > roomsValue)) {
+    roomsSelect.setCustomValidity('для 1, 2 или 3 гостей');
+  } else if (roomsValue === 100 && guestsValue !== 0) {
+    roomsSelect.setCustomValidity('не для гостей');
+  } else {
+    roomsSelect.setCustomValidity('');
   }
-}
+};
 
-function attachHandler() {
-  adForm.addEventListener('change', onFormElementChange);
-}
+roomsSelect.addEventListener('change', validateRoomsGuestsNumber);
+guestsSelect.addEventListener('change', validateRoomsGuestsNumber);
 
 function fillAddressFieldInactiveState() {
   var left = parseInt(mapPinMain.style.left, 10);
@@ -264,7 +269,3 @@ function renderCardBlock(cardsItem) {
 }
 
 var cards = createCards(FLAT_NUMBER);
-
-attachHandler();
-
-var mapFiltersContainer = map.querySelector('.map__filters-container');
